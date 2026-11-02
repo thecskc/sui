@@ -432,6 +432,7 @@ const MAINNET_USDB: &str =
 //              Add the `object::is_shared_input_impl` native and its cost.
 //              Reject an overflowing x-coordinate in `secp256r1_ecrecover`.
 //              Configure explicit Move binary format encoding limits.
+//              Enable ML-DSA-65 account signatures on testnet.
 
 #[derive(Copy, Clone, Debug, Hash, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 pub struct ProtocolVersion(u64);
@@ -4978,6 +4979,9 @@ impl ProtocolConfig {
                     cfg.feature_flags.check_groth16_pvk_length = true;
                     cfg.object_is_shared_input_cost_base = Some(52);
                     cfg.feature_flags.secp256r1_ecrecover_checks_x_below_p = true;
+                    if chain != Chain::Mainnet {
+                        cfg.feature_flags.mldsa65_auth = true;
+                    }
                     cfg.binary_format_limits_profile = Some(BinaryFormatLimitsProfile::V1);
                 }
                 // Use this template when making changes:
